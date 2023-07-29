@@ -21,15 +21,36 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPe
   const [currSummary, setCurrSummary] = useState("");
   const [currMessage, setCurrMessage] = useState("");
 
+  const [currDictatedWord, setCurrDictatedWord] = useState('')
   const [messageCount, setMessageCount] = useState(0);
   const [isSum, setIsSum1] = useState(false);
 
 
 
 
-
+  const currChatRef = useRef();
   const mes = useRef();
   const messagesEndRef = useRef(null);
+
+
+    // Function to handle word highlighting
+    const highlightWord = (word) => {
+      if(currMessage){
+      console.log("i am currChatRef",currChatRef)
+      const currChatText = currChatRef?.current?.innerText;
+      const words = currChatText?.split(" ");
+      const highlightedText = words
+        .map((w) => (w === word ? `<span class="highlight">${w}</span>` : w))
+        .join(" ");
+      currChatRef.current.innerHTML = highlightedText;}
+    };
+
+      // UseEffect to apply highlighting when currDictatedWord changes
+  useEffect(() => {
+    highlightWord(currDictatedWord);
+  }, [currDictatedWord]);
+
+
 
 
   const scrollToBottom = () => {
@@ -153,7 +174,8 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPe
       <div >
 
       {allMessages.map((message, index) => (
-        <p   style={{
+        <p 
+         style={{
           fontFamily: 'monospace',
           fontSize: '18px',
           lineHeight: '1.1',
@@ -172,6 +194,9 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPe
   components={{
     p: ({ node, ...props }) => (
       <p
+      className='currChat'
+        ref= {currChatRef} // {index === allMessages.length - 1 ? currChatRef : null}
+            
         style={{
           fontFamily: 'monospace',
           fontSize: '18px',
@@ -218,7 +243,7 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPe
           <ChatInput onSend={handleButtonClick} setChatMessages={setChatMessages} setMessages={setAllMessages} messages={allMessages}/>
           { (
           <div style={{ marginLeft: '1px',marginTop: '1px' }}>
-           <Tooltip text="Dictate AI Responses"> <Audio text={currMessage}/></Tooltip>
+           <Tooltip text="Dictate AI Responses"> <Audio setCurrDictatedWord={setCurrDictatedWord} text={currMessage}/></Tooltip>
           </div>
         )}
         </div>

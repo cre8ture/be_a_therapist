@@ -115,7 +115,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 
-const SpeechReader = ({ text }) => {
+const SpeechReader = ({ text, setCurrDictatedWord }) => {
   const [inputText, setInputText] = useState(text);
   const isSpeakingRef = useRef(false);
   const [isHighlighted, setIsHighlighted] = useState(false);
@@ -127,6 +127,7 @@ const SpeechReader = ({ text }) => {
   }, [text]);
 
   const readText = (text) => {
+    if(isHighlighted){
     if ('speechSynthesis' in window) {
       const speech = new SpeechSynthesisUtterance(text);
       speech.onend = () => {
@@ -135,11 +136,13 @@ const SpeechReader = ({ text }) => {
       speech.onboundary = (event) => { // Add an onboundary event handler
         if (event.name === 'word') { // Check if the boundary is a word boundary
           setCurrentWord(event.utterance.text.slice(event.charIndex).split(' ')[0]); // Update the current word state variable
+          setCurrDictatedWord(event.utterance.text.slice(event.charIndex).split(' ')[0])
         }
       };
       window.speechSynthesis.speak(speech);
       isSpeakingRef.current = true;
     }
+  }
   };
 
   const handleButtonClick = () => {
