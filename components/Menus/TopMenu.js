@@ -8,7 +8,7 @@ import Wiki from '../Descriptions/Wiki_Sum'
 
 
 
-const TopMenu = () => {
+const TopMenu = ({setPerson, setIsPersonChanged}) => {
 const [term, setTerm] = useState('')
 
   return (
@@ -19,9 +19,9 @@ const [term, setTerm] = useState('')
         {/* <p>Read more about {"person"}</p> */}
         <Wiki term={term}/>
         <br />
-        <Dropdown setTerm={setTerm} />
+        <Dropdown setIsPersonChanged={setIsPersonChanged}  setPerson={setPerson} setTerm={setTerm} />
       </div>
-      <div style={{ marginRight:'5px', marginTop:'5px',marginLeft:'15px', flex: 1, padding: '15px' }}>
+      <div style={{ marginRight:'5px', marginTop:'15px',marginLeft:'10px', flex: 1, padding: '15px' }}>
       <Background/>
 
       </div>

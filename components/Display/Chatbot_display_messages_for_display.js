@@ -7,14 +7,19 @@ import remarkGfm from "remark-gfm";
 import { CopyBlock, dracula } from "react-code-blocks";
 
 import ChatInput from '../Inputs/ChatInput'
+import Audio from '../Audio/Audio'
+import Tooltip from "../Tooltips/Tooltip";
+
+import styles from './Chat.module.css'
 
 
 
-function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2}) {
+function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPersonChanged,  isPersonChanged}) {
   const [chatMessages, setChatMessages] = useState([]);
   const [allMessages, setAllMessages] = useState([]);
   const [currInput, setCurrInput] = useState("");
   const [currSummary, setCurrSummary] = useState("");
+  const [currMessage, setCurrMessage] = useState("");
 
   const [messageCount, setMessageCount] = useState(0);
   const [isSum, setIsSum1] = useState(false);
@@ -42,22 +47,6 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2}) {
     };
   }, []);
 
-//   useEffect(() => {
-// if(isSum)
-// {
-//   setIsSum2(true)
-
-// }
-//   }, [isSum]);
-
-
-  // useEffect(() => {
-    
-  //   console.log("i am currSummary", currSummary)
-  //     setPlanner(currSummary)
-    
-  //     }, [currSummary]);
-
 
   useEffect(() => {
     setAllMessages((prevAllMessages) => [...prevAllMessages, currInput]);
@@ -81,23 +70,19 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2}) {
           console.log("i am summarizing", messageCount)
           setIsSum1(true)
         }
-        // else if (messageCount === 3 || messageCount === 5 || messageCount === 7)
-        // {
-        //   console.log("i am planning now")
-        //   setPlanner(allMessages[allMessages.length-1])
-        //   console.log("allMessages[allMessages.length-1]", allMessages[allMessages.length-1])
-        // }
         else{
           // setIsSum2(false)
           setIsSum1(false)
         }
+
+        console.log("isPersonChanged, person", isPersonChanged, person)
       
-        response = await fetch("/api/stream_memory_embeds2", {
+        response = await fetch("/api/stream_memory_embeds_update_template", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ input, messageCount }),
+          body: JSON.stringify({ input, messageCount, person, isPersonChanged }),
         });
 
 
@@ -111,6 +96,10 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2}) {
         if (done) {
           // setChatMessages((prevMessages) => [...prevMessages.slice(0, -1), curr_message]);
           setMessagesForDisplay((prevMessages) => [...allMessages, curr_message])
+
+          setIsPersonChanged(false)
+          setCurrMessage(curr_message)
+          // 
           if(messageCount === 2 || messageCount === 4 || messageCount === 6)
 
           {
@@ -154,19 +143,22 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2}) {
 
   return (
     <>
-      <div
-      >
-        {/* <p>Ask me anything, dudette!</p>
-        <input ref={mes} placeholder="ask me anything" />
-        <button onClick={handleButtonClick}>Send dudette</button>
-        <br /> */}
+ <div
+  style={{
+  }}
+>
       </div>
 
       {/* <div style={{border: '1px solid lightblue', margin: '3px', padding: '5px'}}> */}
       <div >
 
       {allMessages.map((message, index) => (
-        <p key={index}>{message}</p>
+        <p   style={{
+          fontFamily: 'monospace',
+          fontSize: '18px',
+          lineHeight: '1.1',
+        }}
+        key={index}>{message}</p>
       ))}
       <div
       
@@ -174,53 +166,68 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2}) {
       
       >
       <ReactMarkdown
-        children={chatMessages.join("\n")}
-        remarkPlugins={[remarkGfm]}
-        components={{
-          code({ node, inline, className, children, ...props }) {
-            const match = /language-(\w+)/.exec(className || "");
-            return !inline && match ? (
-              <CopyBlock
-                text={String(children).replace(/\n$/, "")}
-                language={match[1]}
-                showLineNumbers
-                theme={dracula}
-                wrapLines
-                {...props}
-              />
-            ) : (
-              <code className={className} {...props}>
-                {children}
-              </code>
-            );
-          },
-        }}
+  children={chatMessages.join("\n")}
+  remarkPlugins={[remarkGfm]}
+  className={styles.markdown}
+  components={{
+    p: ({ node, ...props }) => (
+      <p
+        style={{
+          fontFamily: 'monospace',
+          fontSize: '18px',
+          lineHeight: '1.1',
+         }}
+        {...props}
       />
+    ),
+    code({ node, inline, className, children, ...props }) {
+      const match = /language-(\w+)/.exec(className || "");
+      return !inline && match ? (
+        <CopyBlock
+          text={String(children).replace(/\n$/, "")}
+          language={match[1]}
+          showLineNumbers
+          theme={dracula}
+          wrapLines
+          {...props}
+        />
+      ) : (
+        <code className={className} {...props}>
+          {children}
+        </code>
+      );
+    },
+  }}
+/>
+
       </div>
       <div
     
-      // style={{ display: 'flex', alignItems: 'center' }}
       >
-      {/* <p>Ask me anything!</p>
-        <input ref={mes}  placeholder="ask me anything" 
-          type="text"
-          style={{
-            width: '300px',
-            transition: 'transform 0.3s',
-  transformOrigin: 'left bottom',
-
-          }}
-          onMouseEnter={(e) => (e.target.style.transform = 'scale(1.2)')}
-          onMouseLeave={(e) => (e.target.style.transform = 'scale(1)')}
-          />
-        <button onClick={handleButtonClick}>Send</button> */}
+   
         <div style={{
-          width:'100%',
-        flex: 'end'}}>
+          display: 'flex', alignItems: 'center'}}>
         </div>
         <br />
-        <ChatInput onSend={handleButtonClick} setChatMessages={setChatMessages} setMessages={setAllMessages} messages={allMessages}/>
+        <div style={{
+          display: 'flex', alignItems: 'center'}}>
+        {/* <ChatInput onSend={handleButtonClick} setChatMessages={setChatMessages} setMessages={setAllMessages} messages={allMessages}/>
+        {chatMessages && <Audio text={"hello I'm puffer!"}/>} */}
+
+<div style={{ flex: '1' }}>
+          <ChatInput onSend={handleButtonClick} setChatMessages={setChatMessages} setMessages={setAllMessages} messages={allMessages}/>
+          { (
+          <div style={{ marginLeft: '1px',marginTop: '1px' }}>
+           <Tooltip text="Dictate AI Responses"> <Audio text={currMessage}/></Tooltip>
+          </div>
+        )}
         </div>
+   
+
+
+        </div>
+        </div>
+
         <br />
         </div>
 

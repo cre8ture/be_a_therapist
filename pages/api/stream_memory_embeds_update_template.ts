@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import Cors from 'cors'
-import { ChatOpenAI } from "langchain/chat_models";
-import { HumanChatMessage, SystemChatMessage } from "langchain/schema";
+// import { ChatOpenAI } from "langchain/chat_models";
+// import { HumanChatMessage, SystemChatMessage } from "langchain/schema";
 import { CallbackManager } from "langchain/callbacks";
 
 import { OpenAI } from "langchain/llms/openai";
@@ -55,77 +55,53 @@ import { PromptTemplate } from "langchain/prompts";
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
 const prompt_MI2 = `
-You are the famous therapist {person}.You are the founder and master of your own unique therapy approach. You are in a therapy session with a client, responding only as you would in your profession.
+You are the famous therapist {person}. You always start he conversation off by introducing yourself. You are the founder and master of your own unique therapy approach. You are in a therapy session with a client, responding only as you would in your profession.
 The following is the conversation so far between you and a client:
 Current conversation:
 {chat_history}
 Human: {input}
 AI:`;
 
+const prompt1 = `
+You are the famous therapist `
+let person = "Sigmund Freud" 
 
-const model= new OpenAI({  openAIApiKey: "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", modelName: "gpt-3.5-turbo", temperature: 0.5, streaming: true})
+const prompt2 = `. First, introducing yourself, describing briefly the key beliefs of your therapy form. You are the founder and master of your own unique therapy approach. You are in a therapy session with a client, responding only as you would in your profession.
+The following is the conversation so far between you and a client:
+Current conversation:
+{chat_history}
+Human: {input}
+AI:`;
 
-  const memory = new ConversationSummaryMemory({
-    memoryKey: "chat_history",
-    llm: model,
-  });
+var prompt_new = prompt1 +  person + prompt2
 
-  // const prompt =
-  //   PromptTemplate.fromTemplate(`The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.
+const model = new OpenAI({ openAIApiKey: "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", modelName: "gpt-3.5-turbo", temperature: 0.5, streaming: true })
 
-  // Current conversation:
-  // {chat_history}
-  // Human: {input}
-  // AI:`);
-
-//   const prompt =
-//   PromptTemplate.fromTemplate(`As an AI counselor using Motivational Interviewing (MI), your goal is to support clients in making positive changes. Remember the key components of MI: engaging, evoking change talk, and planning.
-
-//   Engaging: Establish a trusting and respectful relationship with the client. Show genuine interest and use open-ended questions, affirmations, reflections, and summaries to understand their perspective.
-  
-//   Evoking Change Talk: Elicit the client's own motivation and reasons for change. Listen for change talk, which includes statements that express their desire, ability, reasons, need, or commitment to change then reflect back this change talk. Here are some examples of change talk:
-  
-//   Always summarize the conversation after a few back and forths. 
-//   Desire: "I want to quit smoking because it's bad for my health."
-//   Ability: "I know I can lose weight if I put my mind to it."
-//   Reasons: "If I stop drinking, I'll have more energy and be more productive at work."
-//   Need: "I need to start exercising regularly to lower my blood pressure."
-//   Commitment: "I'm going to start eating healthier from now on."
-//   Taking steps: "I've already cut back on junk food and started eating more fruits and vegetables."
-//   Planning: Collaborate with the client to develop a specific action plan for change. Help them resolve ambivalence, strengthen commitment, and formulate realistic and achievable goals. Negotiate goals, methods, and anticipate barriers. Provide support and resources.
-//   As the AI counselor, remember to create a non-judgmental space, listen actively for change talk, and convey empathy. Utilize the skills of MI, such as open-ended questions, affirmations, reflections, and summaries to guide the counseling process.
-  
-//   Vary your questions. Offer to summarize the conversation so far. 
-//   Imagine you are a veteran AI counselor using MI. Respond to clients with empathy, active listening, and guidance, focusing on engaging, evoking change talk, and planning.
-//   The following is a conversation between a motivational interviewer AI coach and a humn. The AI is listens closely and provides responses only as a motivational interviewer. If the AI does not know the answer to a question or a response is outside the bounds of a therapist client relationship, the AI truthfully says it is unable to answer.
-
-// Current conversation:
-// {chat_history}
-// Human: {input}
-// AI:`);
-
-// const prompt =
-//   PromptTemplate.fromTemplate(`As a veteran AI counselor using Motivational Interviewing (MI), your goal is to support clients in making positive changes. Remember the key components of MI: engaging, evoking change talk, and planning.
-//   Evoking Change Talk and frequently summarize the key ideas gleaned from the chat: Elicit the client's own motivation and reasons for change. Listen for change talk, which includes statements that express their desire, ability, reasons, need, or commitment to change then reflect back this change talk.
-//   You cannot begin any question with "Can.... ". You must vary your questions using different question wordsL what, how, tell me more, etc. For example, "what is important to you about ...", "how do you see yourself if you were to achieve..."
-//   Respond to clients with empathy, active listening.
-//   The following is a conversation between a motivational interviewer AI coach and a humn. The AI is listens closely and provides responses only as a motivational interviewer. If the AI does not know the answer to a question or a response is outside the bounds of a therapist client relationship, the AI truthfully says it is unable to answer.
-// Current conversation:
-// {chat_history}
-// Human: {input}
-// AI:`);
-
-const prompt = new PromptTemplate({
-  inputVariables: ["person"],
-  template: prompt_MI2,
+const memory = new ConversationSummaryMemory({
+  memoryKey: "chat_history",
+  llm: model,
 });
-  const chain = new LLMChain({ llm: model, prompt, memory });
 
-  
+// const prompt = new PromptTemplate({
+//   inputVariables: ["person"],
+//   template: prompt_MI2,
+// });
+
+// const prompt = new PromptTemplate({
+//   inputVariables: ["person"],
+//   template: prompt_MI2,
+// });
+
+let prompt =
+  PromptTemplate.fromTemplate(prompt_new);
+var chain = new LLMChain({ llm: model, prompt, memory });
+
+
+prompt.format({ person:"Sigmund Freud"})
 
 
 
-  
+
 // Initializing the cors middleware
 // You can read more about the available options here: https://github.com/expressjs/cors#configuration-options
 const cors = Cors({
@@ -159,45 +135,47 @@ export default async function handler(
 
   // console.log('is api', req, res)
   try {
-    res.writeHead(200, { 
+    res.writeHead(200, {
       "Content-Type": "application/octet-stream"
-    , "Transfer-Encoding": "chunked" });
-    
+      , "Transfer-Encoding": "chunked"
+    });
+
     if (!OPENAI_API_KEY) {
       throw new Error("OPENAI_API_KEY is not defined.");
     }
 
-    // console.log("i am in the head")
-    let s = "";
-    // const chatStreaming = new ChatOpenAI({
-    //   streaming: true,
-    //   callbackManager: CallbackManager.fromHandlers({
-    //     async handleLLMNewToken(token) {
-    //       // console.clear();
-    //       // s += token;
-    //       // console.log(s);
-    //       // handleNewToken(token);
-    //       res.write(`${token}`)
-    //     },
-    //   }),
-    // });
+    console.log("I am in NOT CONDITIONAL API, req.body.new, req.body.person", req.body.isPersonChanged, req.body.person)
 
-    if (req.body.new)
-    {
+    if (req.body.isPersonChanged) {
 
-      // Format the updated prompt
-const formattedUpdatedPrompt = await prompt.format({
-  person: req.body.person,
-});
+      // const formattedUpdatedPrompt = await prompt.format({
+      //   person: req.body.person,
+      // }); 
+
+//       const updatedPrompt = new PromptTemplate({
+//   inputVariables: ["person"],
+//   template: prompt_MI2,
+// });
+
+// prompt.format({ person: req.body.person})
+      person = req.body.person
+      prompt_new = prompt1 +  person + prompt2
+      let prompt =
+      PromptTemplate.fromTemplate(prompt_new);
+      chain.prompt = prompt // = new LLMChain({ llm: model, prompt, memory });
+
+      console.log("i am prompt",prompt)
+      console.log("I am in API, req.body.new, req.body.person", req.body.isPersonChanged, req.body.person)
+      // chain = new LLMChain({ llm: model, prompt, memory });
     }
     // Call the chain with the inputs and a callback for the streamed tokens
-const result = await chain.call({ input: req.body.input }, [
-  {
-    handleLLMNewToken(token: string) {
-      res.write(token);
-    },
-  },
-]);
+    const result = await chain.call({ input: req.body.input }, [
+      {
+        handleLLMNewToken(token: string) {
+          res.write(token);
+        },
+      },
+    ]);
 
 
     res.end();
@@ -205,7 +183,7 @@ const result = await chain.call({ input: req.body.input }, [
     console.error(error);
     res.status(500).send("Internal Server Error");
   }
-  
+
 
   // Rest of the API logic
   // res.json({ message: 'Hello PUPS!' })

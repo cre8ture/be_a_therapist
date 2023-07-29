@@ -89,8 +89,8 @@
 .square {
   position: relative;
   margin: 0 10px;
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   display: flex;
   justify-content: center;
   align-items: center;
