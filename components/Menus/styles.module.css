@@ -1,0 +1,189 @@
+.container {
+    padding: 4rem 1rem;
+  }
+  
+  .container p {
+    margin: 1.5rem 0;
+  }
+  
+  .card {
+    max-width: 60rem;
+    box-shadow: -10px 10px 80px rgba(255, 255, 255, 0.1);
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 0 auto;
+  }
+  
+  .inlineCode {
+    color: #be00ff;
+    font-size: 16px;
+    white-space: pre-wrap;
+  }
+  
+  .inlineCode::before,
+  .inlineCode::after {
+    content: '`';
+  }
+  
+  .hr {
+    border: 0;
+    border-top: 1px solid #333;
+    margin: 1.5rem 0;
+  }
+  
+  .bgWrap {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    z-index: -1;
+  }
+  
+  .bgText {
+    margin: 0;
+    font-size: 2rem;
+    line-height: 3rem;
+    text-align: center;
+    padding-top: 40vh;
+    text-shadow: 1px 1px 1px #3c5c5e;
+  }
+
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .myElement {
+    /* Set the SVG file as the background image */
+    background-image: url('./topography.svg');
+  
+    /* Optionally, set the background color in case the SVG has transparent parts */
+    background-color: #DFDBE5;
+
+    /* animation: fadeOut 3s infinite; */
+
+    /* background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)); */
+    mix-blend-mode: screen; 
+    /* Use the screen blend mode to create a blending effect */
+  
+  }
+  
+/* BoxComponent.module.css */
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap');
+
+/* New class-based selector for the container */
+.box-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f1f1f1;
+}
+
+.square {
+  position: relative;
+  margin: 0 10px;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* overflow: hidden; */
+}
+
+.container {
+  overflow: hidden;
+}
+
+
+/* Update the selector to include the 'square' class */
+.square span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 2px solid black;
+  transition: 0.5s;
+}
+
+.square span:nth-child(1) {
+  border-radius: 32% 58% 69% 43% / 48% 32% 59% 55%;
+  animation: animate 6s linear infinite;
+}
+
+.square span:nth-child(2) {
+  border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+  animation: animate 4s linear infinite;
+}
+
+.square span:nth-child(3) {
+  border-radius: 31% 45% 74% 35% / 38% 56% 51% 87%;
+  animation: animate2 10s linear infinite;
+}
+
+/* Update the selector to include the 'linkedin', 'twitter', and 'github' classes */
+.square.linkedin:hover span:nth-child(1) {
+  border: none;
+  /* background: #f07e6e; */
+}
+
+.square.twitter:hover span:nth-child(2) {
+  border: none;
+  background: #84cdfa;
+}
+
+.square.github:hover span:nth-child(3) {
+  border: none;
+  background: #5ad1cd;
+}
+
+.content {
+  position: relative;
+  padding: 40px 60px;
+  color: #fff;
+  text-align: center;
+  transition: 0.5s;
+  z-index: 1000;
+}
+
+.content a {
+  position: relative;
+  display: inline-block;
+  margin-top: 10px;
+  border: 2px solid #fff;
+  padding: 6px 18px;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 73% 27% 44% 56% / 49% 44% 56% 51%;
+}
+
+.content a:hover {
+  background: white;
+  color: #333;
+}
+
+@keyframes animate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes animate2 {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
