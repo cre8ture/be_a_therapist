@@ -21,7 +21,9 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPe
   const [currSummary, setCurrSummary] = useState("");
   const [currMessage, setCurrMessage] = useState("");
 
-  const [currDictatedWord, setCurrDictatedWord] = useState('')
+  // const [currDictatedWord, setCurrDictatedWord] = useState('')
+  const [currDictatedWord, setCurrDictatedWord] = useState({})
+
   const [messageCount, setMessageCount] = useState(0);
   const [isSum, setIsSum1] = useState(false);
 
@@ -32,26 +34,34 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPe
   const mes = useRef();
   const messagesEndRef = useRef(null);
 
-
+  
     // Function to handle word highlighting
     const highlightWord = (word) => {
+      console.log("i am word", word)
       if(currMessage){
       console.log("i am currChatRef",currChatRef)
       const currChatText = currChatRef?.current?.innerText;
       const words = currChatText?.split(" ");
       const highlightedText = words
-        .map((w) => (w === word ? `<span class="highlight">${w}</span>` : w))
+        // .map((w, i) => (w === word ? `<mark className="highlight">${w}</mark>` : w))
+        .map((w, i) => (i === word.index ? `<mark className="highlight">${w}</mark>` : w))
+
         .join(" ");
       currChatRef.current.innerHTML = highlightedText;}
     };
 
-      // UseEffect to apply highlighting when currDictatedWord changes
+
   useEffect(() => {
     highlightWord(currDictatedWord);
   }, [currDictatedWord]);
 
 
+    // var prevIndex = -1
+    //   const highlightedText = words
+    //     .map((w, i) => (w === word  ? `<mark className="highlight">${w}</mark>` : w))
+    //     .join(" ");
 
+      // UseEffect to apply highlighting when currDictatedWord changes
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
