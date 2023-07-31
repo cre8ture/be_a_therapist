@@ -20,6 +20,7 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPe
   const [currInput, setCurrInput] = useState("");
   const [currSummary, setCurrSummary] = useState("");
   const [currMessage, setCurrMessage] = useState("");
+  const [reset, setReset] = useState(0)
 
   // const [currDictatedWord, setCurrDictatedWord] = useState('')
   const [currDictatedWord, setCurrDictatedWord] = useState({})
@@ -113,7 +114,7 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPe
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ input, messageCount, person, isPersonChanged }),
+          body: JSON.stringify({ input, messageCount, person, isPersonChanged, reset}),
         });
 
 
@@ -127,9 +128,9 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPe
         if (done) {
           // setChatMessages((prevMessages) => [...prevMessages.slice(0, -1), curr_message]);
           setMessagesForDisplay((prevMessages) => [...allMessages, curr_message])
-
           setIsPersonChanged(false)
           setCurrMessage(curr_message)
+          setReset(0)
           // 
           if(messageCount === 2 || messageCount === 4 || messageCount === 6)
 
@@ -250,10 +251,12 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPe
         {chatMessages && <Audio text={"hello I'm puffer!"}/>} */}
 
 <div style={{ flex: '1' }}>
-          <ChatInput onSend={handleButtonClick} setChatMessages={setChatMessages} setMessages={setAllMessages} messages={allMessages}/>
+          <ChatInput onSend={handleButtonClick} setReset={setReset} setChatMessages={setChatMessages} setMessages={setAllMessages} messages={allMessages}/>
           { (
           <div style={{ marginLeft: '1px',marginTop: '1px' }}>
-           <Tooltip text="Dictate AI Responses"> <Audio setCurrDictatedWord={setCurrDictatedWord} text={currMessage}/></Tooltip>
+           <Tooltip text="Dictate AI Responses"> 
+           <br />
+           <Audio setCurrDictatedWord={setCurrDictatedWord} text={currMessage}/></Tooltip>
           </div>
         )}
         </div>

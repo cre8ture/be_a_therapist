@@ -66,7 +66,14 @@ const prompt1 = `
 You are the famous therapist `
 let person = "Sigmund Freud" 
 
-const prompt2 = `. First, introducing yourself, describing briefly the key beliefs of your therapy form. You are the founder and master of your own unique therapy approach. You are in a therapy session with a client, responding only as you would in your profession.
+// const prompt2 = `. First, introducing yourself, describing briefly the key beliefs of your therapy form. You are the founder and master of your own unique therapy approach. You are in a therapy session with a client, responding only as you would in your profession.
+// The following is the conversation so far between you and a client:
+// Current conversation:
+// {chat_history}
+// Human: {input}
+// AI:`;
+
+const prompt2 = `. First, introducing yourself, describing briefly the key beliefs of your therapy form.  You are in a therapy session with a client. Respond only as yourself, using the behaviors, linguistic behaviors your are known for throughout history.
 The following is the conversation so far between you and a client:
 Current conversation:
 {chat_history}
@@ -148,15 +155,7 @@ export default async function handler(
 
     if (req.body.isPersonChanged) {
 
-      // const formattedUpdatedPrompt = await prompt.format({
-      //   person: req.body.person,
-      // }); 
-
-//       const updatedPrompt = new PromptTemplate({
-//   inputVariables: ["person"],
-//   template: prompt_MI2,
-// });
-
+ 
 // prompt.format({ person: req.body.person})
       person = req.body.person
       prompt_new = prompt1 +  person + prompt2
@@ -164,9 +163,14 @@ export default async function handler(
       PromptTemplate.fromTemplate(prompt_new);
       chain.prompt = prompt // = new LLMChain({ llm: model, prompt, memory });
 
-      console.log("i am prompt",prompt)
-      console.log("I am in API, req.body.new, req.body.person", req.body.isPersonChanged, req.body.person)
+      // console.log("i am prompt",prompt)
+      // console.log("I am in API, req.body.new, req.body.person", req.body.isPersonChanged, req.body.person)
       // chain = new LLMChain({ llm: model, prompt, memory });
+    }
+
+    if(req.body.reset){
+      console.log("we are resetting")
+      memory.clear()
     }
     // Call the chain with the inputs and a callback for the streamed tokens
     const result = await chain.call({ input: req.body.input }, [

@@ -11,9 +11,10 @@ const SearchBar = ({setTerm, setPerson, setIsPersonChanged}) => {
     if (event.target.value) {
       // filter options based on searchTerm
       setOptions(['Aaron T. Beck', 'Carl Jung','Kobi Kambon', 'Mamie Phipps Clark', 'Fritz Perls','Inez Beverly Prosser', 'Milton H. Erickson', 'Sigmund Freud',  'Virginia Satir','BF Skinner','Ruth Westheimer',].filter(option => option.includes(event.target.value)));
-    } else {
-      setOptions([]);
-    }
+    } 
+    // else {
+    //   setOptions([]);
+    // }
   };
 
   const handleOptionSelect = (event) => {

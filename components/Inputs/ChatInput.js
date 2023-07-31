@@ -115,8 +115,9 @@
 // export default ChatInput;
 
 import React, { useState, useRef, useEffect } from 'react';
+import Tooltip from "../Tooltips/Tooltip";
 
-const ChatInput = ({ onSend, setMessages, setChatMessages, messages }) => {
+const ChatInput = ({ onSend, setMessages, setChatMessages, messages, setReset }) => {
   const [inputValue, setInputValue] = useState('');
   const [inputExpanded, setInputExpanded] = useState(false);
   const inputRef = useRef(null);
@@ -137,6 +138,7 @@ const ChatInput = ({ onSend, setMessages, setChatMessages, messages }) => {
     setInputValue('');
     setMessages([]);
     setChatMessages([]);
+    setReset(1)
     if (inputRef.current) {
       inputRef.current.value = '';
     }
@@ -208,15 +210,18 @@ const ChatInput = ({ onSend, setMessages, setChatMessages, messages }) => {
   return (
     <div>
       {messages.length === 0 && (
-        <p ref={pRef} style={{ transition: 'transform 0.5s' }}>
+        <p ref={pRef} style={{ transition: 'transform 0.5s',
+        transformOrigin: 'right bottom'}}>
           Ask me anything!
         </p>
       )}
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {!inputExpanded && (
+          <Tooltip text="Reset chat"> 
           <button onClick={handleReset} style={{ marginRight: '8px' }}>
             Reset
           </button>
+          </Tooltip>
         )}
         <input
           ref={inputRef}
@@ -240,6 +245,7 @@ const ChatInput = ({ onSend, setMessages, setChatMessages, messages }) => {
           onMouseLeave={handleMouseLeave}
         />
         {inputValue && (
+          <Tooltip text="Send to AI"> 
           <button
             onClick={handleMouseClick}
             style={{
@@ -252,6 +258,7 @@ const ChatInput = ({ onSend, setMessages, setChatMessages, messages }) => {
           >
             Send
           </button>
+          </Tooltip>
         )}
       </div>
     </div>
