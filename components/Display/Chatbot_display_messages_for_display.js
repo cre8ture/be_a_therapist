@@ -1,6 +1,6 @@
 
 // export default Chatbot;
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -28,6 +28,8 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPe
   const [messageCount, setMessageCount] = useState(0);
   const [isSum, setIsSum1] = useState(false);
 
+  const [chatRefs, setChatRefs] = useState([]);
+
 
 
 
@@ -36,33 +38,95 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPe
   const messagesEndRef = useRef(null);
 
   
-    // Function to handle word highlighting
+    // // Function to handle word highlighting
+    // const highlightWord = (word) => {
+    //   console.log("i am word", word)
+    //   if(currMessage){
+    //   console.log("i am currChatRef",currChatRef)
+    //   const currChatText = currChatRef?.current?.innerText;
+    //   const words = currChatText?.split(" ");
+    //   console.log("i am words", words)
+
+    //   const highlightedText = words?.map((w, i) => (i === word.index ? `<mark className="highlight">${w}</mark>` : w))
+
+    //     .join(" ");
+    //     // .map((w, i) => (w === word ? `<mark className="highlight">${w}</mark>` : w))
+
+    //   currChatRef.current.innerHTML = highlightedText;}
+    // };
+
     const highlightWord = (word) => {
-      console.log("i am word", word)
-      if(currMessage){
-      console.log("i am currChatRef",currChatRef)
-      const currChatText = currChatRef?.current?.innerText;
-      const words = currChatText?.split(" ");
-      const highlightedText = words
-        // .map((w, i) => (w === word ? `<mark className="highlight">${w}</mark>` : w))
-        .map((w, i) => (i === word.index ? `<mark className="highlight">${w}</mark>` : w))
-
-        .join(" ");
-      currChatRef.current.innerHTML = highlightedText;}
+      if (currMessage) {
+        var indx = 0;
+        console.log("messagesEndRef", messagesEndRef);
+        chatRefs.forEach((chatRef) => {
+          const currChatText = chatRef?.current?.innerText;
+          console.log("i am chatRef", chatRef);
+    
+          const words = currChatText?.split(" ");
+    
+          const highlightedText = words
+            ?.map((w, i) => {
+              let result =
+                indx === word.index ? `<mark className="highlight">${w}</mark>` : w;
+              indx++;
+              return result;
+            })
+            .join(" ");
+          try {
+            chatRef.current.innerHTML = highlightedText;
+          } catch (e) {
+            console.log("error with highlight", e);
+          }
+        });
+      }
     };
+    
+// const highlightWord = (word) => {
+//   if (currMessage) {
+//     console.log("messagesEndRef", messagesEndRef);
+//     const currChatText = messagesEndRef?.current?.innerText;
+//     const paragraphs = currChatText?.split("\n");
+//     var indx = 0;
+//     const highlightedText = paragraphs
+//       ?.map((paragraph) => {
+//         const words = paragraph.split(" ");
+//         return words
+//           .map((w, i) => {
+//             let result =
+//               indx === word.index ? `<mark className="highlight">${w}</mark>` : w;
+//             indx++;
+//             return result;
+//           })
+//           .join(" ");
+//       })
+//       .join("<br>");
 
+//     try {
+//       console.log("highlightedText", highlightedText);
+//       // messagesEndRef.current.innerHTML = highlightedText;
+//     } catch (e) {
+//       console.log("error with highlight", e);
+//     }
+//   }
+// };
+
+
+
+  // Update chatRefs whenever chatMessages changes
+  useEffect(() => {
+    setChatRefs(currMessage.split('\n').map(() =>  React.createRef()))
+  }, [currMessage]);
+
+  console.log("chatMessages", chatMessages)
 
   useEffect(() => {
     highlightWord(currDictatedWord);
   }, [currDictatedWord]);
 
-
-    // var prevIndex = -1
-    //   const highlightedText = words
-    //     .map((w, i) => (w === word  ? `<mark className="highlight">${w}</mark>` : w))
-    //     .join(" ");
-
-      // UseEffect to apply highlighting when currDictatedWord changes
+  useEffect(() => {
+    setMessageCount(0);
+  }, [reset]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -173,6 +237,9 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPe
     // mes.current.value = "";
   };
 
+
+  let index = 0
+
   return (
     <>
  <div
@@ -182,7 +249,13 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPe
       </div>
 
       {/* <div style={{border: '1px solid lightblue', margin: '3px', padding: '5px'}}> */}
-      <div >
+      <div
+      style={{
+        fontFamily: 'monospace',
+        fontSize: '18px',
+        lineHeight: '1.1',
+      }}
+       >
 
       {allMessages.map((message, index) => (
         <p 
@@ -198,10 +271,11 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPe
       ref={messagesEndRef}
       
       >
-      <ReactMarkdown
+      {/* <ReactMarkdown
   children={chatMessages.join("\n")}
   remarkPlugins={[remarkGfm]}
   className={styles.markdown}
+
   components={{
     p: ({ node, ...props }) => (
       <p
@@ -216,6 +290,53 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPe
         {...props}
       />
     ),
+    code({ node, inline, className, children, ...props }) {
+      const match = /language-(\w+)/.exec(className || "");
+      return !inline && match ? (
+        <CopyBlock
+          text={String(children).replace(/\n$/, "")}
+          language={match[1]}
+          showLineNumbers
+          theme={dracula}
+          wrapLines
+          {...props}
+        />
+      ) : (
+        <code className={className} {...props}>
+          {children}
+        </code>
+      );
+    },
+  }}
+/> */}
+<ReactMarkdown
+  children={chatMessages.join("\n")}
+  remarkPlugins={[remarkGfm]}
+  className={styles.markdown}
+  components={{
+    p: ({ node, ...props }) => {
+      // Create a new ref for each paragraph
+      // const ref = useRef(null);
+      // setChatRefs((refs) => [...refs, ref]);
+      // const index = chatMessages.indexOf(node.children[0].value);
+      const currentIndex = index;
+          index++;
+
+      return (
+        <p
+          className="currChat"
+          // ref={ref}
+          ref={chatRefs[currentIndex]}
+          style={{
+            fontFamily: "monospace",
+            fontSize: "18px",
+            lineHeight: "1.1",
+          }}
+          {...props}
+        />
+      );
+    },
+    // ...
     code({ node, inline, className, children, ...props }) {
       const match = /language-(\w+)/.exec(className || "");
       return !inline && match ? (

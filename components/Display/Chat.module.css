@@ -1,0 +1,11 @@
+.markdown {
+    font-family: 'monospace';
+font-size: '18px';
+line-height: '1.1';
+}
+
+/* .currChat::before {
+    content: "\\A";
+    white-space: pre;
+} */
+

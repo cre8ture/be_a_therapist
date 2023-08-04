@@ -12,7 +12,7 @@ import { OpenAI } from "langchain/llms/openai";
 
 
 // import { OpenAI } from "../../components/langchain/langchain/dist/llms/openai";
-import { LLMChain } from "../../components/langchain/langchain/dist/chains";
+import { LLMChain } from "langchain/chains";
 import { PromptTemplate } from "langchain/prompts";
 
 import { MemoryVectorStore } from "langchain/vectorstores/memory";

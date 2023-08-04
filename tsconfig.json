@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "amp.d.ts", "**/*.ts", "**/*.tsx", "pages/api/stream2.js", "components/Menus/background2.js"],
+  "include": ["next-env.d.ts", "amp.d.ts", "**/*.ts", "**/*.tsx", "pages/api/stream2.js", "components/Menus/background2.js", "pages/api/stream_memory_embeds_local.js"],
   "exclude": ["node_modules"]
 }

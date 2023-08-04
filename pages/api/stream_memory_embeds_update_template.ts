@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import Cors from 'cors'
 // import { ChatOpenAI } from "langchain/chat_models";
 // import { HumanChatMessage, SystemChatMessage } from "langchain/schema";
-import { CallbackManager } from "langchain/callbacks";
+// import { CallbackManager } from "langchain/callbacks";
 
 import { OpenAI } from "langchain/llms/openai";
 import { ConversationSummaryMemory } from "langchain/memory";
@@ -73,7 +73,7 @@ let person = "Sigmund Freud"
 // Human: {input}
 // AI:`;
 
-const prompt2 = `. First, introducing yourself, describing briefly the key beliefs of your therapy form.  You are in a therapy session with a client. Respond only as yourself, using the behaviors, linguistic behaviors your are known for throughout history.
+const prompt2 = `. First, introducing yourself, describing briefly the key beliefs of your therapy form.  You are in a therapy session with a client. Respond only as yourself using the linguistic behaviors your are known for throughout history. Use only the therapy form you've developed.
 The following is the conversation so far between you and a client:
 Current conversation:
 {chat_history}
@@ -82,7 +82,9 @@ AI:`;
 
 var prompt_new = prompt1 +  person + prompt2
 
-const model = new OpenAI({ openAIApiKey: "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", modelName: "gpt-3.5-turbo", temperature: 0.5, streaming: true })
+// const model = new OpenAI({ openAIApiKey: "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", modelName: "gpt-3.5-turbo", temperature: 0.5, streaming: true })
+const model = new OpenAI({ openAIApiKey: OPENAI_API_KEY, modelName: "gpt-3.5-turbo", temperature: 0.5, streaming: true })
+
 
 const memory = new ConversationSummaryMemory({
   memoryKey: "chat_history",

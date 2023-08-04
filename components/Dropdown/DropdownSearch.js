@@ -36,7 +36,7 @@ const SearchBar = ({setTerm, setPerson, setIsPersonChanged}) => {
     <div style={{
         marginLeft:'12px',
     }}>
-      {selectedOption && <label>Input a therapist to talk to</label>}
+      {selectedOption && <label>Input a therapist to talk to or choose one from the dropdown list below:</label>}
       <div>
     <datalist id="suggestions">
         <option>Aaron T. Beck</option>

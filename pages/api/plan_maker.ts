@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import Cors from 'cors'
-import { ChatOpenAI } from "langchain/chat_models";
-import { CallbackManager } from "langchain/callbacks";
+// import { ChatOpenAI } from "langchain/chat_models";
+// import { CallbackManager } from "langchain/callbacks";
 
 import { OpenAI } from "langchain/llms/openai";
 // import { ConversationSummaryMemory } from "langchain/memory";
@@ -60,7 +60,7 @@ export default async function handler(
     if (!OPENAI_API_KEY) {
       throw new Error("OPENAI_API_KEY is not defined.");
     }
-    const result = await llm.call("Analyze the text below, if it's a summarization, then turn the summary into a series of TO DO steps for a TO DO list. Only use what's in the summary so as not to add extraneous steps. If there's nothing to make plans about, just state that you cannot come up with a plan yet but we should keep conversing so we can generate one together. Output this in a javascript list [`step1', 'step2', ..., 'step3'] " + "Text to analyze: " + req.body.input );
+    const result = await llm.call("Analyze the text below and draw up a summary. Ouput this in a list [key_idea1,key_idea2,...,] " + "Text to analyze: " + req.body.input );
     // console.log("I AM THE RES", result)
     res.status(200).json({ result });
     // return result

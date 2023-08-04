@@ -9,7 +9,7 @@ function Chatbot({planner, isSum}) {
 
   const inputText =  planner; 
 
-  console.log("PLANNER IN PLANS", planner)
+  // console.log("PLANNER IN PLANS", planner)
 
   const handleButtonClick = async () => {
     setButtonClicked(true);
@@ -52,7 +52,7 @@ function Chatbot({planner, isSum}) {
     // opacity: buttonClicked ? 0 : 1
   }}
 >
-  Generate Plan
+  Summarize Session
 </button>}
 
       {buttonClicked&&<div
@@ -73,7 +73,7 @@ function Chatbot({planner, isSum}) {
         opacity: buttonClicked ? '1' : '0',
 
         transition: 'max-height 1s ease-in-out'
-    }}>  {!isLoading && <div>So far in our conversation, we have discussed the following possible plan: </div>}
+    }}>  {!isLoading && <div>So far in our conversation, we have discussed the following and will aim to: </div>}
       {chatMessages.map((message, index) => (
   <div style={{ padding: '3px', marginBottom: '0.5em',  }} key={index}>
   {index + 1}. {message}

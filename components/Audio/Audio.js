@@ -123,21 +123,25 @@ const SpeechReader = ({ text, setCurrDictatedWord }) => {
 
   useEffect(() => {
     setInputText(text);
+    if(isHighlighted)
+    {
     readText(text.substring(4))
+  }
   }, [text]);
 
   const readText = (text) => {
     // if(!isHighlighted){
     // const textLength = text.length
+    // console.log("i am passed in text", text)
     var count = 0
     if ('speechSynthesis' in window) {
-      const speech = new SpeechSynthesisUtterance(text);
+      const speech = new SpeechSynthesisUtterance(text.substring(3));
       speech.onend = () => {
         isSpeakingRef.current = false;
       };
       speech.onboundary = (event) => { // Add an onboundary event handler
         if (event.name === 'word') { // Check if the boundary is a word boundary
-
+          // console.log("i am (event.utterance.text.slice", event.utterance.text)
           setCurrentWord(event.utterance.text.slice(event.charIndex).split(' ')[0]); // Update the current word state variable
           // setCurrDictatedWord(event.utterance.text.slice(event.charIndex).split(' ')[0])
           setCurrDictatedWord({word: event.utterance.text.slice(event.charIndex).split(' ')[0],index: count+1})
@@ -152,12 +156,17 @@ const SpeechReader = ({ text, setCurrDictatedWord }) => {
   };
 
   const handleButtonClick = () => {
+
     if (isHighlighted) {
       window.speechSynthesis.cancel();
     } else if (!isSpeakingRef.current && inputText) {
       readText(inputText);
     }
-    setIsHighlighted((prevState) => !prevState); // Toggle the highlight state
+    // setIsHighlighted((prevState) => !prevState); // Toggle the highlight state
+    // setIsHighlighted((prevState) => !isHighlighted); // Toggle the highlight state
+
+    setIsHighlighted(!isHighlighted); // Toggle the highlight state
+
   };
 
   return (
