@@ -7,36 +7,16 @@ import { ConversationSummaryMemory } from "langchain/memory";
 import { LLMChain } from "langchain/chains";
 import { PromptTemplate } from "langchain/prompts";
 
-
-import { VectorStoreRetrieverMemory } from "langchain/memory";
-import { OpenAIEmbeddings } from "langchain/embeddings/openai";
-import { MemoryVectorStore } from "langchain/vectorstores/memory";
-
-
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-
-const vectorStore = new MemoryVectorStore(new OpenAIEmbeddings());
 
 // const model = new OpenAI({ openAIApiKey: "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", modelName: "gpt-3.5-turbo", temperature: 0.5, streaming: true })
 const model = new OpenAI({ openAIApiKey: OPENAI_API_KEY, modelName: "gpt-3.5-turbo", temperature: 0.5, streaming: true })
 
 
-// const memory = new ConversationSummaryMemory({
-//   memoryKey: "history",
-//   llm: model,
-// });
-
-var memory = new VectorStoreRetrieverMemory({
-  // 1 is how many documents to return, you might want to return more, eg. 4
-  vectorStoreRetriever: vectorStore.asRetriever(2),
+const memory = new ConversationSummaryMemory({
   memoryKey: "history",
+  llm: model,
 });
-
-
-//  memory.saveContext(
-//   { input: "Hello, I am your client" },
-//   { output: "I am here to help you" }
-// );
 
 const prompt1 = `
 You are the famous therapist `
@@ -57,12 +37,10 @@ var prompt_new = prompt1 +  person + prompt2
 
 let prompt =
   PromptTemplate.fromTemplate(prompt_new);
-
-
 var chain = new LLMChain({ llm: model, prompt, memory });
 
 
-// prompt.format({ person:"Sigmund Freud"})
+prompt.format({ person:"Sigmund Freud"})
 
 
 
@@ -112,6 +90,7 @@ export default async function handler(
     if (req.body.isPersonChanged) {
 
  
+// prompt.format({ person: req.body.person})
       person = req.body.person
       prompt_new = prompt1 +  person + prompt2
       let prompt =
@@ -122,15 +101,7 @@ export default async function handler(
 
     if(req.body.reset){
       console.log("we are resetting")
-      // memory.clear()
-      // await memory.clearMemory();
-      memory = new VectorStoreRetrieverMemory({
-        // 1 is how many documents to return, you might want to return more, eg. 4
-        vectorStoreRetriever: vectorStore.asRetriever(2),
-        memoryKey: "history",
-      });
-       chain = new LLMChain({ llm: model, prompt, memory });
-
+      memory.clear()
     }
     // Call the chain with the inputs and a callback for the streamed tokens
     const result = await chain.call({ input: req.body.input }, [
