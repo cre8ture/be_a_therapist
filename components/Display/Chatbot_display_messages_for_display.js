@@ -58,10 +58,10 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPe
     const highlightWord = (word) => {
       if (currMessage) {
         var indx = 0;
-        console.log("messagesEndRef", messagesEndRef);
+        // console.log("messagesEndRef", messagesEndRef);
         chatRefs.forEach((chatRef) => {
           const currChatText = chatRef?.current?.innerText;
-          console.log("i am chatRef", chatRef);
+          // console.log("i am chatRef", chatRef);
     
           const words = currChatText?.split(" ");
     
@@ -118,7 +118,7 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPe
     setChatRefs(currMessage.split('\n').map(() =>  React.createRef()))
   }, [currMessage]);
 
-  console.log("chatMessages", chatMessages)
+  // console.log("chatMessages", chatMessages)
 
   useEffect(() => {
     highlightWord(currDictatedWord);
@@ -163,7 +163,7 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPe
         {
           input = input + ". At the end of your response, as my AI coach, summarize my challenges and plans so far"
           // Between two brackets, like [step1, step2, ... ] offer the top steps for me to take so far to achieve my goals"
-          console.log("i am summarizing", messageCount)
+          // console.log("i am summarizing", messageCount)
           setIsSum1(true)
         }
         else{
@@ -171,7 +171,7 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPe
           setIsSum1(false)
         }
 
-        console.log("isPersonChanged, person", isPersonChanged, person)
+        // console.log("isPersonChanged, person", isPersonChanged, person)
       
         response = await fetch("/api/stream_memory_embeds_update_template", {
           method: "POST",
@@ -201,7 +201,7 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPe
           {
             setCurrSummary(curr_message)
             // setIsSum2(true)
-            console.log("i am planning", curr_message)
+            // console.log("i am planning", curr_message)
 
             setPlanner(curr_message)
 
@@ -229,7 +229,7 @@ function Chatbot( {setMessagesForDisplay, setPlanner, setIsSum2, person, setIsPe
 
     setMessageCount(prevCount => prevCount + 1)
 // if messsage count greater than random number bet 5-10 we ask to summarize and then make a plan
-    console.log("messageCount", messageCount)
+    // console.log("messageCount", messageCount)
     const input = mes //mes.current.value;
     // console.log(input);
     setCurrInput("HUMAN: " + input);

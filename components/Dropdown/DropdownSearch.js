@@ -54,6 +54,7 @@ const SearchBar = ({setTerm, setPerson, setIsPersonChanged}) => {
     </datalist>
     {/* <input onInput={handleOptionSelect} onKeyDown={handleOptionSelect} autoComplete="on" list="suggestions" placeholder="Search"/>  */}
     <input
+    className="custom-dropdown"
   onInput={handleOptionSelect}
   onKeyDown={handleOptionSelect}
   autoComplete="off"
