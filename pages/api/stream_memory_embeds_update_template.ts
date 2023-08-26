@@ -201,7 +201,7 @@ export default async function handler(
     throw new Error("OPENAI_API_KEY is not defined.");
   }
 
-  console.log("I am in NOT CONDITIONAL API, req.body.new, req.body.person", req.body.isPersonChanged, req.body.person)
+  // console.log("I am in NOT CONDITIONAL API, req.body.new, req.body.person", req.body.isPersonChanged, req.body.person)
 
   if (req.body.isPersonChanged) {
     person = req.body.person
