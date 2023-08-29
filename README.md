@@ -1,5 +1,3 @@
-Sure, I can help you with that. Here is a possible README for your project:
-
 # Be Any Therapist
 
 Be Any Therapist is a web application that lets you experience different therapy styles and techniques. You can chat with a language model that mimics the style and technique of any therapist you search for. You can also see your chat history and how it changes over time.
