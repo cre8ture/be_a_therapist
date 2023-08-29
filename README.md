@@ -1,29 +1,39 @@
-# API Routes Example with CORS
+Sure, I can help you with that. Here is a possible README for your project:
 
-Next.js ships with [API routes](https://nextjs.org/docs/api-routes/introduction) which provides an easy solution to build your own `API`.
+# Be Any Therapist
 
-This example shows how to create an `API` endpoint with [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) headers, using the [cors](https://github.com/expressjs/cors) package.
+Be Any Therapist is a web application that lets you experience different therapy styles and techniques. You can chat with a language model that mimics the style and technique of any therapist you search for. You can also see your chat history and how it changes over time.
 
-## Deploy your own
+## How it works
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/api-routes-cors)
+Be Any Therapist uses the following technologies:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/next.js/tree/canary/examples/api-routes-cors&project-name=api-routes-cors&repository-name=api-routes-cors)
+- Next.js: A React framework for building fast and scalable web applications.
+- Langchain: A language model that can generate natural and fluent text based on a given prompt or query.
+- Tailwind: A utility-first CSS framework for styling web pages.
 
-## How to use
+The application uses streaming chat to communicate with the language model in real time. It also uses vectorization to encode and store the chat history as numerical representations. This allows the application to retrieve and display the chat history efficiently and accurately.
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
+## Why it matters
 
-```bash
-npx create-next-app --example api-routes-cors api-routes-cors-app
+Be Any Therapist is an open source project that aims to raise awareness and education about mental health. There is a huge mental health crisis in the US, where there are not enough mental health clinicians and the costs are too high. This application is not a substitute for a therapist, but it may be a way to learn more about different styles and techniques of therapy and get a taste of them.
+
+How to use your own OpenAI key
+If you want to use your own OpenAI key to communicate with the Langchain language model, you need to create a file named .env.local in the root directory of the project and add your key there. You can follow the steps in the code block below:
+
+```
+# Create a file named .env.local in the root directory of the project
+touch .env.local
+
+# Open the file with your preferred editor and add the following line
+# Replace <your-openai-key> with your actual OpenAI key
+echo "OPENAI_KEY=<your-openai-key>" >> .env.local
+
+# Save and close the file
 ```
 
-```bash
-yarn create next-app --example api-routes-cors api-routes-cors-app
-```
+## How to contribute
 
-```bash
-pnpm create next-app --example api-routes-cors api-routes-cors-app
-```
+If you are interested in contributing to this project, please check out the [issues](https://github.com/yourusername/BeAnyTherapist/issues) and [pull requests](https://github.com/yourusername/BeAnyTherapist/pulls) sections on GitHub. You can also contact me at your@email.com.
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+I hope this helps. Is there anything else I can do for you?
